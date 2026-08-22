@@ -220,3 +220,66 @@ class Viewer(ORM.Model):
         self.db.push(f"""
                        SELECT * FROM Viewer WHERE LastName = '{LastName}';""")
         return self.db.fetchall()
+
+
+class Session(ORM.Model):
+
+    def __init__(self, db:SQLite):
+        self.db = db
+
+        self.id_session = ORM.Field(
+            name='id_session',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=True,
+            primary_key=True)
+
+        self.id_movie = ORM.Field(
+            name='id_movie',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+        self.id_hall = ORM.Field(
+            name='id_hall',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+        self.time_session = ORM.Field(
+            name='time_session',
+            type=ORM.TEXT,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+    def create_session(self, id_movie: int, id_hall: int, time_session: str):
+        self.db.push(f"""
+           INSERT INTO Session (id_movie, id_hall, time_session) VALUES ({id_movie}, {id_hall}, '{time_session}')""")
+
+    def get_all(self):
+        self.db.push(f"""
+                       SELECT * FROM Session""")
+        return self.db.fetchall()
+
+    def get_by_id_session(self, id_session: int):
+        self.db.push(f"""
+                       SELECT * FROM Session WHERE id_session = {id_session};""")
+        return self.db.fetchall()
+
+    def get_by_id_movie(self, id_movie: int):
+        self.db.push(f"""
+                       SELECT * FROM Session WHERE id_movie = {id_movie};""")
+        return self.db.fetchall()
+
+    def get_by_id_hall(self, id_hall: int):
+        self.db.push(f"""
+                       SELECT * FROM Session WHERE id_hall = {id_hall};""")
+        return self.db.fetchall()
+
+    def get_by_time_session(self, time_session: str):
+        self.db.push(f"""
+                       SELECT * FROM Session WHERE time_session = '{time_session}';""")
+        return self.db.fetchall()
