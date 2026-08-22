@@ -55,6 +55,7 @@ class Movies(ORM.Model):
 
         return self.db.fetchall()
 
+
 class Hall(ORM.Model):
 
     def __init__(self, db:SQLite):
@@ -170,3 +171,52 @@ class Seat(ORM.Model):
         return self.db.fetchall()
 
 
+class Viewer(ORM.Model):
+
+    def __init__(self, db:SQLite):
+        self.db = db
+
+        self.id_viewer = ORM.Field(
+            name='id_viewer',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=True,
+            primary_key=True)
+
+        self.FirstName = ORM.Field(
+            name='FirstName',
+            type=ORM.TEXT,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+        self.LastName = ORM.Field(
+            name='LastName',
+            type=ORM.TEXT,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+    def create_viewer(self, FirstName: str, LastName: str):
+        self.db.push(f"""
+           INSERT INTO Viewer (FirstName, LastName) VALUES ('{FirstName}', '{LastName}')""")
+
+    def get_all(self):
+        self.db.push(f"""
+                       SELECT * FROM Viewer""")
+        return self.db.fetchall()
+
+    def get_by_id_viewer(self, id_viewer: int):
+        self.db.push(f"""
+                       SELECT * FROM Viewer WHERE id_viewer = {id_viewer};""")
+        return self.db.fetchall()
+
+    def get_by_FirstName(self, FirstName: str):
+        self.db.push(f"""
+                       SELECT * FROM Viewer WHERE FirstName = '{FirstName}';""")
+        return self.db.fetchall()
+
+    def get_by_LastName(self, LastName: str):
+        self.db.push(f"""
+                       SELECT * FROM Viewer WHERE LastName = '{LastName}';""")
+        return self.db.fetchall()
