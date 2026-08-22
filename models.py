@@ -5,7 +5,7 @@ class Movies(ORM.Model):
 
         self.id_movie = ORM.Field(
          name='id_movie',
-         type=ORM.BIGINT,
+         type=ORM.INTEGER,
          not_null=True,
          auto_increment=True,
          primary_key=True)
@@ -28,7 +28,7 @@ class Movies(ORM.Model):
     def create_movies(self, title: str, duration: int):
         self.db.push(f"""
         INSERT INTO Movies (title, duration)
-        VALUES ({title}, {duration})""")
+        VALUES ('{title}', {duration})""")
 
     # Read-s
     def get_all(self):
@@ -45,7 +45,7 @@ class Movies(ORM.Model):
 
     def get_by_title(self, title: str):
         self.db.push(f"""
-                    SELECT * FROM Movies WHERE title = {title};""")
+                    SELECT * FROM Movies WHERE title = '{title}';""")
 
         return self.db.fetchall()
 
@@ -54,3 +54,119 @@ class Movies(ORM.Model):
                     SELECT * FROM Movies WHERE duration = {duration};""")
 
         return self.db.fetchall()
+
+class Hall(ORM.Model):
+
+    def __init__(self, db:SQLite):
+        self.db = db
+
+        self.id_hall = ORM.Field(
+            name='id_hall',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=True,
+            primary_key=True)
+
+        self.name_hall = ORM.Field(
+            name='name_hall',
+            type=ORM.TEXT,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+        self.capacity = ORM.Field(
+            name='capacity',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+    def create_hall(self, name_hall: str, capacity: int):
+        self.db.push(f"""
+        INSERT INTO Hall (name_hall, capacity)
+                        VALUES ('{name_hall}', {capacity})""")
+
+    def get_all(self):
+        self.db.push(f"""
+                    SELECT * FROM Hall""")
+        return self.db.fetchall()
+
+    def get_by_id_hall(self, id_hall: int):
+        self.db.push(f"""
+                    SELECT * FROM Hall WHERE id_hall = {id_hall}""")
+        return self.db.fetchall()
+
+    def get_by_name_hall(self, name_hall: str):
+        self.db.push(f"""
+                    SELECT * FROM Hall WHERE name_hall = '{name_hall}'""")
+        return self.db.fetchall()
+
+    def get_by_capacity(self, capacity: int):
+        self.db.push(f"""
+                    SELECT * FROM Hall WHERE capacity = {capacity}""")
+        return self.db.fetchall()
+
+
+class Seat(ORM.Model):
+
+    def __init__(self, db:SQLite):
+        self.db = db
+
+        self.id_seat = ORM.Field(
+            name='id_seat',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=True,
+            primary_key=True)
+
+        self.id_hall = ORM.Field(
+            name='id_hall',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+        self.row = ORM.Field(
+            name='row',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+        self.seat_number = ORM.Field(
+            name='seat_number',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+    def create_seat(self, id_hall: int, row: int, seat_number: int):
+        self.db.push(f"""
+        INSERT INTO Seat (id_hall, row, seat_number) VALUES ({id_hall}, {row}, {seat_number})""")
+
+    def get_all(self):
+        self.db.push(f"""
+                    SELECT * FROM Seat""")
+        return self.db.fetchall()
+
+    def get_by_id_seat(self, id_seat: int):
+        self.db.push(f"""
+                    SELECT * FROM Seat WHERE id_seat = {id_seat};""")
+        return self.db.fetchall()
+
+    def get_by_id_hall(self, id_hall: int):
+        self.db.push(f"""
+                    SELECT * FROM Seat WHERE id_hall = {id_hall};""")
+        return self.db.fetchall()
+
+    def get_by_row(self, row: int):
+        self.db.push(f"""
+                    SELECT * FROM Seat WHERE row = {row};""")
+        return self.db.fetchall()
+
+    def get_by_seat_number(self, seat_number: int):
+        self.db.push(f"""
+                    SELECT * FROM Seat WHERE seat_number = {seat_number};""")
+        return self.db.fetchall()
+
+
