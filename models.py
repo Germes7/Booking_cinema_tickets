@@ -283,3 +283,78 @@ class Session(ORM.Model):
         self.db.push(f"""
                        SELECT * FROM Session WHERE time_session = '{time_session}';""")
         return self.db.fetchall()
+
+
+class Ticket(ORM.Model):
+
+    def __init__(self, db:SQLite):
+        self.db = db
+
+        self.id_ticket = ORM.Field(
+            name='id_ticket',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=True,
+            primary_key=True)
+
+        self.id_session = ORM.Field(
+            name='id_session',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+        self.id_seat = ORM.Field(
+            name='id_seat',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+        self.id_viewer = ORM.Field(
+            name='id_viewer',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+        self.price = ORM.Field(
+            name='price',
+            type=ORM.INTEGER,
+            not_null=True,
+            auto_increment=False,
+            primary_key=False)
+
+    def create_ticket(self, id_session: int, id_seat: int, id_viewer: int, price: int):
+        self.db.push(f"""
+           INSERT INTO Ticket (id_session, id_seat, id_viewer, price) VALUES ({id_session}, {id_seat}, {id_viewer}, {price})""")
+
+    def get_all(self):
+        self.db.push(f"""
+                       SELECT * FROM Ticket""")
+        return self.db.fetchall()
+
+    def get_by_id_ticket(self, id_ticket: int):
+        self.db.push(f"""
+                       SELECT * FROM Ticket WHERE id_ticket = {id_ticket};""")
+        return self.db.fetchall()
+
+    def get_by_id_session(self, id_session: int):
+        self.db.push(f"""
+                       SELECT * FROM Ticket WHERE id_session = {id_session};""")
+        return self.db.fetchall()
+
+    def get_by_id_seat(self, id_seat: int):
+        self.db.push(f"""
+                       SELECT * FROM Ticket WHERE id_seat = {id_seat};""")
+        return self.db.fetchall()
+
+    def get_by_id_viewer(self, id_viewer: int):
+        self.db.push(f"""
+                       SELECT * FROM Ticket WHERE id_viewer = {id_viewer};""")
+        return self.db.fetchall()
+
+    def get_by_price(self, price: int):
+        self.db.push(f"""
+                       SELECT * FROM Ticket WHERE price = {price};""")
+        return self.db.fetchall()
